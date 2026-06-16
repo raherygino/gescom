@@ -125,7 +125,7 @@ export function CustomTitleBar() {
         </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center px-4 no-drag">
+      <div className="flex flex-1 items-center justify-center px-4">
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
           <Input
@@ -137,7 +137,7 @@ export function CustomTitleBar() {
             }}
             readOnly
           />
-          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5 rounded border border-border bg-muted px-1 py-0.5">
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-0.5  no-drag rounded border border-border bg-muted px-1 py-0.5">
             <Command className="h-2.5 w-2.5 text-muted-foreground" />
             <span className="text-[9px] font-medium text-muted-foreground">P</span>
           </div>

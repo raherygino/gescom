@@ -2,6 +2,8 @@
 
 A modern desktop application built with **Electron**, **React**, **Vite**, and **TypeScript** — featuring a polished UI inspired by VS Code, Obsidian, and Linear.
 
+![Screenshot](/docs/screenshoots/01.png)
+
 ## Features
 
 - **Custom Title Bar** — Frameless window with macOS traffic lights and Windows/Linux window controls, full drag regions, and focus-aware styling
