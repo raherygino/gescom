@@ -112,3 +112,16 @@ body,
   background: hsl(var(--primary) / 0.3);
   color: hsl(var(--primary-foreground));
 }
+
+.draggable {
+  -webkit-app-region: drag;
+  app-region: drag;
+}
+
+.no-drag,
+.no-drag *,
+.no-drag *::before,
+.no-drag *::after {
+  -webkit-app-region: no-drag;
+  app-region: no-drag;
+}

@@ -1,16 +1,17 @@
 import { Outlet } from "react-router-dom";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard";
 import { useSidebarStore } from "@/stores/sidebar-store";
+import { CustomTitleBar } from "@/components/title-bar/custom-title-bar";
 import { Sidebar } from "./sidebar";
-import { TopBar } from "./top-bar";
 import { StatusBar } from "./status-bar";
+
 export function AppLayout() {
   useKeyboardShortcuts();
   const { isOpen, width } = useSidebarStore();
 
   return (
     <div className="flex h-screen flex-col">
-      <TopBar />
+      <CustomTitleBar />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
         <main

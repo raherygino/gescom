@@ -16,8 +16,8 @@ function createWindow() {
     minWidth: 900,
     minHeight: 600,
     show: false,
-    frame: true,
-    titleBarStyle: "hiddenInset",
+    frame: false,
+    titleBarStyle: "hidden",
     backgroundColor: "#0a0a0b",
     webPreferences: {
       preload: join(__dirname, "preload.js"),
@@ -36,6 +36,22 @@ function createWindow() {
 
   mainWindow.once("ready-to-show", () => {
     mainWindow?.show();
+  });
+
+  mainWindow.on("maximize", () => {
+    mainWindow?.webContents.send("window-state-changed", true);
+  });
+
+  mainWindow.on("unmaximize", () => {
+    mainWindow?.webContents.send("window-state-changed", false);
+  });
+
+  mainWindow.on("focus", () => {
+    mainWindow?.webContents.send("window-focus-changed", true);
+  });
+
+  mainWindow.on("blur", () => {
+    mainWindow?.webContents.send("window-focus-changed", false);
   });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -86,4 +102,8 @@ ipcMain.handle("close-window", () => {
 
 ipcMain.handle("is-maximized", () => {
   return mainWindow?.isMaximized() ?? false;
+});
+
+ipcMain.handle("is-focused", () => {
+  return mainWindow?.isFocused() ?? false;
 });
