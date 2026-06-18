@@ -30,11 +30,11 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
         className="flex flex-col items-center gap-6"
       >
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/20">
-          <span className="text-2xl font-bold text-primary-foreground">G</span>
+          <span className="text-2xl font-bold text-primary-foreground">O</span>
         </div>
         <div className="flex flex-col items-center gap-1">
-          <h1 className="text-xl font-semibold tracking-tight">Gescom</h1>
-          <p className="text-xs text-muted-foreground">Loading your workspace...</p>
+          <h1 className="text-xl font-semibold tracking-tight">OPUS</h1>
+          <p className="text-xs text-muted-foreground">Opérations Policières Unifiées</p>
         </div>
         <motion.div
           initial={{ width: 0 }}

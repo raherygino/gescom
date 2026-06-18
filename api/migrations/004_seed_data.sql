@@ -18,16 +18,16 @@ INSERT INTO `roles` (`code`, `name`, `description`) VALUES
 -- Seed: Personnel (test records)
 -- ============================================
 INSERT INTO `personnel` (`im`, `lastname`, `firstname`, `grade`, `fonction`, `email`, `phone`) VALUES
-('ADM-001', 'Admin',    'System',    'Commissaire Divisionnaire', 'Super Administrator', 'admin@gescom.test',  '+221 77 000 00 01'),
-('CH-001',  'Diop',     'Mamadou',   'Commissaire',               'Police Chief',        'chief@gescom.test',  '+221 77 000 00 02'),
-('SG-001',  'Ndiaye',   'Fatou',     'Commissaire Adjoint',       'Head of Service SG',  'head.sg@gescom.test','+221 77 000 00 03'),
-('SED-001', 'Fall',     'Ousmane',   'Commissaire Adjoint',       'Head of Service Sédentaire', 'head.sed@gescom.test', '+221 77 000 00 04'),
-('PJ-001',  'Ba',       'Aminata',   'Commissaire Adjoint',       'Head of Service PJ',  'head.pj@gescom.test','+221 77 000 00 05'),
-('INV-001', 'Sow',      'Ibrahima',  'Lieutenant',                'Investigator',        'invest@gescom.test', '+221 77 000 00 06'),
-('OFF-001', 'Kane',     'Marième',   'Brigadier-Chef',            'Officer',             'officer@gescom.test','+221 77 000 00 07'),
-('REC-001', 'Gueye',    'Alpha',     'Garde de la Paix',          'Reception Officer',   'reception@gescom.test','+221 77 000 00 08'),
-('CLK-001', 'Thiam',    'Aïcha',     'Secrétaire Administratif',  'Records Clerk',       'clerk@gescom.test',  '+221 77 000 00 09'),
-('CUS-001', 'Sy',       'Pape',      'Brigadier',                 'Custody Officer',     'custody@gescom.test','+221 77 000 00 10');
+('ADM-001', 'Admin',    'System',    'Commissaire Divisionnaire', 'Super Administrator', 'admin@opus.test',  '+221 77 000 00 01'),
+('CH-001',  'Diop',     'Mamadou',   'Commissaire',               'Police Chief',        'chief@opus.test',  '+221 77 000 00 02'),
+('SG-001',  'Ndiaye',   'Fatou',     'Commissaire Adjoint',       'Head of Service SG',  'head.sg@opus.test','+221 77 000 00 03'),
+('SED-001', 'Fall',     'Ousmane',   'Commissaire Adjoint',       'Head of Service Sédentaire', 'head.sed@opus.test', '+221 77 000 00 04'),
+('PJ-001',  'Ba',       'Aminata',   'Commissaire Adjoint',       'Head of Service PJ',  'head.pj@opus.test','+221 77 000 00 05'),
+('INV-001', 'Sow',      'Ibrahima',  'Lieutenant',                'Investigator',        'invest@opus.test', '+221 77 000 00 06'),
+('OFF-001', 'Kane',     'Marième',   'Brigadier-Chef',            'Officer',             'officer@opus.test','+221 77 000 00 07'),
+('REC-001', 'Gueye',    'Alpha',     'Garde de la Paix',          'Reception Officer',   'reception@opus.test','+221 77 000 00 08'),
+('CLK-001', 'Thiam',    'Aïcha',     'Secrétaire Administratif',  'Records Clerk',       'clerk@opus.test',  '+221 77 000 00 09'),
+('CUS-001', 'Sy',       'Pape',      'Brigadier',                 'Custody Officer',     'custody@opus.test','+221 77 000 00 10');
 
 -- ============================================
 -- Seed: Users (password = "password123" hashed with bcrypt)

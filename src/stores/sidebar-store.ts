@@ -18,6 +18,6 @@ export const useSidebarStore = create<SidebarState>()(
       setOpen: (open) => set({ isOpen: open }),
       setWidth: (width) => set({ width: Math.max(200, Math.min(400, width)) }),
     }),
-    { name: "gescom-sidebar" },
+    { name: "opus-sidebar" },
   ),
 );

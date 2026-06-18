@@ -18,6 +18,6 @@ export const useThemeStore = create<ThemeState>()(
           theme: state.theme === "dark" ? "light" : "dark",
         })),
     }),
-    { name: "gescom-theme" },
+    { name: "opus-theme" },
   ),
 );

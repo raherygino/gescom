@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useAuthStore } from "@/stores/auth-store";
 import { useSidebarStore } from "@/stores/sidebar-store";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -7,33 +8,78 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   LayoutDashboard,
-  FileText,
+  Users,
+  UserCog,
+  LogOut,
+  Building2,
+  Car,
+  Scale,
   Settings,
-  File,
 } from "lucide-react";
+import type { RoleCode } from "@/types";
 
-const mainNavItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" },
-  { icon: FileText, label: "Notes", path: "/notes" },
-  { icon: Settings, label: "Settings", path: "/settings" },
-];
+interface NavItem {
+  icon: React.ElementType;
+  label: string;
+  path: string;
+  roles?: RoleCode[];
+}
 
-const recentItems = [
-  { icon: File, label: "Meeting Notes", path: "/notes/1" },
-  { icon: File, label: "Project Plan", path: "/notes/2" },
-  { icon: File, label: "Ideas & Brainstorm", path: "/notes/3" },
-];
+function getNavItems(roleCode?: RoleCode): NavItem[] {
+  const items: NavItem[] = [];
 
-const tags = [
-  { label: "work", color: "bg-blue-500" },
-  { label: "personal", color: "bg-green-500" },
-  { label: "ideas", color: "bg-purple-500" },
-];
+  // Dashboard (all roles)
+  items.push({ icon: LayoutDashboard, label: "Dashboard", path: "/dashboard" });
+
+  // Division-specific dashboards
+  if (roleCode === "HEAD_SED" || roleCode === "RECEPTION" || roleCode === "CLERK") {
+    items.push({ icon: Building2, label: "Sédentaire", path: "/sedentaire/dashboard" });
+  }
+  if (roleCode === "HEAD_SG" || roleCode === "OFFICER") {
+    items.push({ icon: Car, label: "Service Général", path: "/sg/dashboard" });
+  }
+  if (roleCode === "HEAD_PJ" || roleCode === "INVESTIGATOR" || roleCode === "CUSTODY") {
+    items.push({ icon: Scale, label: "Police Judiciaire", path: "/pj/dashboard" });
+  }
+
+  // Admin/Chief can see all divisions
+  if (roleCode === "SUPER_ADMIN" || roleCode === "CHIEF" || roleCode === "STATION_ADMIN") {
+    items.push(
+      { icon: Building2, label: "Sédentaire", path: "/sedentaire/dashboard" },
+      { icon: Car, label: "Service Général", path: "/sg/dashboard" },
+      { icon: Scale, label: "Police Judiciaire", path: "/pj/dashboard" },
+    );
+  }
+
+  // Personnel Management (admin roles)
+  if (roleCode === "SUPER_ADMIN" || roleCode === "STATION_ADMIN" || roleCode === "CLERK") {
+    items.push({ icon: Users, label: "Personnel", path: "/personnel" });
+  }
+
+  // User Management (super admin only)
+  if (roleCode === "SUPER_ADMIN") {
+    items.push({ icon: UserCog, label: "Utilisateurs", path: "/users" });
+  }
+
+  return items;
+}
 
 export function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { isOpen, width } = useSidebarStore();
+  const { user, logout } = useAuthStore();
+
+  const navItems = getNavItems(user?.role_code);
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
+
+  const userInitials = user
+    ? `${user.firstname.charAt(0)}${user.lastname.charAt(0)}`
+    : "??";
 
   return (
     <AnimatePresence initial={false}>
@@ -52,7 +98,7 @@ export function Sidebar() {
                 <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary">
                   <span className="text-[10px] font-bold text-primary-foreground">G</span>
                 </div>
-                <span className="text-sm font-semibold">Gescom</span>
+                <span className="text-sm font-semibold">OPUS</span>
               </div>
             </div>
 
@@ -61,9 +107,11 @@ export function Sidebar() {
                 <p className="px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                   Navigation
                 </p>
-                {mainNavItems.map((item) => {
-                  const isActive = location.pathname === item.path ||
-                    (item.path !== "/" && location.pathname.startsWith(item.path));
+                {navItems.map((item) => {
+                  const isActive =
+                    location.pathname === item.path ||
+                    (item.path !== "/" &&
+                      location.pathname.startsWith(item.path));
                   const Icon = item.icon;
                   return (
                     <Button
@@ -88,53 +136,41 @@ export function Sidebar() {
 
               <div className="space-y-1">
                 <p className="px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Recent
+                  Système
                 </p>
-                {recentItems.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Button
-                      key={item.path}
-                      variant="ghost"
-                      className="w-full justify-start gap-3 h-8 px-2 text-sm font-normal text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                      onClick={() => navigate(item.path)}
-                    >
-                      <Icon className="h-4 w-4 shrink-0 text-muted-foreground" />
-                      <span className="truncate">{item.label}</span>
-                    </Button>
-                  );
-                })}
-              </div>
-
-              <Separator className="my-4" />
-
-              <div className="space-y-1">
-                <p className="px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  Tags
-                </p>
-                {tags.map((tag) => (
-                  <Button
-                    key={tag.label}
-                    variant="ghost"
-                    className="w-full justify-start gap-3 h-8 px-2 text-sm font-normal text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-                  >
-                    <div className={cn("h-2 w-2 rounded-full", tag.color)} />
-                    {tag.label}
-                  </Button>
-                ))}
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start gap-3 h-9 px-2 text-sm font-normal text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  onClick={() => navigate("/settings")}
+                >
+                  <Settings className="h-4 w-4 shrink-0" />
+                  Paramètres
+                </Button>
               </div>
             </ScrollArea>
 
-            <div className="border-t border-sidebar-border p-3">
+            <div className="border-t border-sidebar-border p-3 space-y-2">
               <div className="flex items-center gap-2 rounded-lg bg-sidebar-accent/50 px-3 py-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-medium text-primary">
-                  JD
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-[10px] font-medium text-primary shrink-0">
+                  {userInitials}
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-xs font-medium">John Doe</span>
-                  <span className="text-[10px] text-muted-foreground">Free plan</span>
+                <div className="flex flex-col min-w-0">
+                  <span className="text-xs font-medium truncate">
+                    {user?.firstname} {user?.lastname}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground truncate">
+                    {user?.role_name}
+                  </span>
                 </div>
               </div>
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-2 h-8 text-xs text-muted-foreground hover:text-destructive"
+                onClick={handleLogout}
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                Déconnexion
+              </Button>
             </div>
           </div>
         </motion.aside>

@@ -1,5 +1,5 @@
 {
-  "name": "gescom",
+  "name": "opus",
   "type": "module",
   "version": "1.0.0",
   "description": "Modern desktop application built with Electron, React, and Vite",
@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.60.0",
+    "axios": "^1.18.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.0",

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * GESCOM API — Front Controller
+ * OPUS API — Front Controller
  *
  * Pure PHP REST API (no framework)
  */
@@ -53,7 +53,7 @@ $router->delete('/api/users/{id}',  [UserController::class, 'destroy']);
 $router->get('/api/health', function () {
     echo json_encode([
         'success' => true,
-        'message' => 'GESCOM API is running',
+        'message' => 'OPUS API is running',
         'version' => '1.0.0',
         'time'    => date('c'),
     ]);

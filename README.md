@@ -1,4 +1,4 @@
-# Gescom
+# OPUS — Opérations Policières Unifiées sur le Système
 
 A modern desktop application built with **Electron**, **React**, **Vite**, and **TypeScript** — featuring a polished UI inspired by VS Code, Obsidian, and Linear.
 
@@ -42,7 +42,7 @@ A modern desktop application built with **Electron**, **React**, **Vite**, and *
 
 ```bash
 git clone <repo-url>
-cd gescom
+cd opus
 npm install
 ```
 
@@ -99,7 +99,7 @@ npm run format       # Prettier formatting
 ## Project Structure
 
 ```
-gescom/
+opus/
 ├── electron/
 │   ├── main.ts              # Main process (window, IPC, menus)
 │   ├── preload.ts           # contextBridge API
