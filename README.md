@@ -1,146 +1,125 @@
 # OPUS — Opérations Policières Unifiées sur le Système
 
-A modern desktop application built with **Electron**, **React**, **Vite**, and **TypeScript** — featuring a polished UI inspired by VS Code, Obsidian, and Linear.
+A cross-platform **Police Station Management System** with a desktop application, mobile Android app, and a REST API backend.
 
-![Screenshot](/docs/screenshoots/01.png)
+| Platform | Technology |
+|----------|-----------|
+| **Desktop** | Electron + React 18 + Vite 6 + TypeScript |
+| **Mobile** | Android (Kotlin/Java) |
+| **API** | PHP 8+ (pure, no framework) |
+| **Database** | MySQL 8.0+ |
 
-## Features
+## Project Structure
 
-- **Custom Title Bar** — Frameless window with macOS traffic lights and Windows/Linux window controls, full drag regions, and focus-aware styling
-- **Dashboard** — Overview with stats cards and recent activity feed
-- **Notes** — Sidebar list with note editor, tags, search, and star/filter support
-- **Settings** — Theme toggle, editor preferences, keyboard shortcuts reference
-- **Command Palette** — `Ctrl/Cmd+P` with fuzzy search and keyboard navigation
-- **Dark & Light Themes** — Persistent theme toggle with smooth transitions
-- **Global Search** — Integrated search bar in the title bar
-- **Resizable Sidebar** — Collapsible navigation panel with recent files and tags
-- **Notification System** — Toast notifications for success/error/info/warning
-- **Keyboard Shortcuts** — Full keyboard navigation throughout the app
-- **Status Bar** — Connection status, git branch, theme indicator
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Desktop Runtime | Electron 33 |
-| Frontend | React 18 + TypeScript |
-| Build Tool | Vite 6 |
-| Styling | Tailwind CSS 3 + shadcn/ui |
-| State Management | Zustand |
-| Server State | TanStack React Query |
-| Routing | React Router 6 |
-| Animations | Framer Motion |
-| Icons | Lucide React |
-| Packaging | Electron Builder |
+```
+opus/
+├── api/               # PHP REST API backend
+│   ├── config/        # App & database configuration
+│   ├── public/        # Front controller (index.php)
+│   ├── src/           # Controllers, Models, Middleware, Helpers
+│   └── uploads/       # File uploads
+├── android/           # Android mobile application
+│   └── app/           # Android app module
+├── database/          # SQL migration scripts
+├── desktop/           # Electron desktop application
+│   ├── electron/      # Main process & preload
+│   ├── src/           # React renderer (pages, components, stores)
+│   └── dist/          # Built renderer output
+├── FEATURES.md        # Requirements & feature specification
+└── SPECIFICATIONS.md  # Functional specifications (French)
+```
 
 ## Prerequisites
 
 - Node.js 18+
 - npm 9+
+- PHP 8.0+
+- MySQL 8.0+
+- Android Studio (for mobile development)
 
 ## Installation
 
 ```bash
 git clone <repo-url>
 cd opus
-npm install
+
+# Install desktop dependencies
+cd desktop && npm install
+cd ..
+```
+
+### Database Setup
+
+```bash
+# Create database and run migrations
+mysql -u root -p < database/001_create_roles.sql
+mysql -u root -p < database/002_create_personnel.sql
+mysql -u root -p < database/003_create_users.sql
+mysql -u root -p < database/004_seed_data.sql
 ```
 
 ## Development
 
-Start the app in development mode with hot reload:
+### API Server
 
 ```bash
+# Start the PHP development server
+php -S localhost:8080 -t api/public
+```
+
+The API runs at `http://localhost:8080/api` and provides endpoints for auth, personnel, and user management.
+
+### Desktop App
+
+```bash
+cd desktop
+npm run dev
+# or
 npm run electron:dev
 ```
 
-This runs the Vite dev server and launches Electron simultaneously. The renderer process hot-reloads on file changes.
+Runs the Vite dev server with Electron hot reload.
 
-Or run just the web version (no Electron):
+### Android App
 
-```bash
-npm run dev
-```
+Open the `android/` folder in Android Studio and run on device or emulator.
 
 ## Build
 
-Build the renderer and Electron main process:
+### Desktop
 
 ```bash
-npm run build
+cd desktop
+npm run build          # Build renderer + main process
+npm run electron:build # Package into platform installer
 ```
 
-Output: `dist/` (renderer) and `dist-electron/` (main + preload)
-
-## Package for Distribution
+### Android
 
 ```bash
-npm run electron:build
+cd android
+./gradlew assembleDebug
 ```
-
-This produces platform-specific installers in the `release/` directory using Electron Builder.
-
-### Platform Targets
-
-| Platform | Format |
-|----------|--------|
-| Windows | NSIS installer (`.exe`) |
-| macOS | DMG (`.dmg`) |
-| Linux | AppImage + deb |
 
 ## Code Quality
 
 ```bash
-npm run typecheck    # TypeScript type checking (--noEmit)
+cd desktop
+npm run typecheck    # TypeScript type checking
 npm run lint         # ESLint across src/
 npm run format       # Prettier formatting
 ```
 
-## Project Structure
+## API Endpoints
 
-```
-opus/
-├── electron/
-│   ├── main.ts              # Main process (window, IPC, menus)
-│   ├── preload.ts           # contextBridge API
-│   └── electron.d.ts        # Type declarations
-├── src/
-│   ├── components/
-│   │   ├── layout/          # App shell (sidebar, status bar)
-│   │   ├── title-bar/       # Custom frameless title bar
-│   │   │   ├── custom-title-bar.tsx
-│   │   │   ├── window-controls.tsx   # Windows/Linux buttons
-│   │   │   └── traffic-lights.tsx    # macOS traffic lights
-│   │   └── ui/              # shadcn-style primitives
-│   ├── pages/               # Route pages
-│   ├── stores/              # Zustand stores
-│   ├── hooks/               # Custom React hooks
-│   ├── lib/utils.ts         # Utilities (cn, formatDate, etc.)
-│   ├── types/               # TypeScript types
-│   └── styles/globals.css   # Design tokens + theme
-├── vite.config.ts           # Vite + electron plugin config
-├── tailwind.config.ts       # Tailwind design system
-└── electron-builder.yml     # Packaging config
-```
-
-## Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl/Cmd + P` | Open command palette |
-| `Ctrl/Cmd + B` | Toggle sidebar |
-| `Ctrl/Cmd + Shift + L` | Toggle theme |
-| `G D` | Go to Dashboard |
-| `G N` | Go to Notes |
-| `G S` | Open Settings |
-| `Escape` | Close modal/dialog |
-
-## Architecture
-
-- **Security**: `contextIsolation: true`, `nodeIntegration: false`, CSP enforced, all IPC through `contextBridge`
-- **Theming**: CSS custom properties toggled by `dark`/`light` class on `<html>`, persisted via Zustand
-- **Code Splitting**: Vite `manualChunks` splits vendor (React, Router) and UI (framer-motion, lucide) bundles
-- **Title Bar**: `frame: false` with `titleBarStyle: "hidden"` — fully custom HTML/CSS title bar with platform-specific controls. The `draggable` CSS class enables window dragging; interactive elements use `no-drag`.
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/auth/login` | User login |
+| POST | `/api/auth/refresh` | Refresh token |
+| GET | `/api/auth/me` | Current user info |
+| GET | `/api/personnel` | List personnel |
+| GET | `/api/users` | List users |
+| GET | `/api/health` | Health check |
 
 ## License
 
