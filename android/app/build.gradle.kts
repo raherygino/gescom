@@ -2,6 +2,13 @@ plugins {
     alias(libs.plugins.androidApplication)
 }
 
+configurations.all {
+    resolutionStrategy {
+        force("androidx.core:core-ktx:1.13.0")
+        force("androidx.core:core:1.13.0")
+    }
+}
+
 android {
     namespace = "com.gsoft.opus"
     compileSdk = 34
@@ -36,6 +43,8 @@ android {
 
 dependencies {
 
+    implementation(libs.core.ktx)
+    implementation(libs.core)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
