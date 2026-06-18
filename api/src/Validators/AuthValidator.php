@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Validators;
+
+class AuthValidator
+{
+    public static function validateLogin(array $data): array
+    {
+        $errors = [];
+
+        if (empty($data['username'])) {
+            $errors['username'] = 'Username is required';
+        }
+
+        if (empty($data['password'])) {
+            $errors['password'] = 'Password is required';
+        }
+
+        return $errors;
+    }
+}
